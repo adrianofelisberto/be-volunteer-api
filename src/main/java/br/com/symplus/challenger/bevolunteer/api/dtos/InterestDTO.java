@@ -1,5 +1,9 @@
 package br.com.symplus.challenger.bevolunteer.api.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class InterestDTO {
 
 	private Integer id;

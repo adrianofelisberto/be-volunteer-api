@@ -1,16 +1,23 @@
 package br.com.symplus.challenger.bevolunteer.api.entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity(name = "volunteers")
 public class Volunteer {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "name", length = 45, nullable = false)
@@ -24,6 +31,14 @@ public class Volunteer {
 
 	@Column(name = "whatsapp", length = 45, nullable = false)
 	private String whatsapp;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	@JoinTable(
+		name = "volunteers_has_interests",
+		joinColumns={@JoinColumn(name="volunteers_id")},
+		inverseJoinColumns={@JoinColumn(name="interests_id")}
+	)
+	private List<Interest> interests;
 
 	public Integer getId() {
 		return id;
@@ -59,6 +74,14 @@ public class Volunteer {
 
 	public void setWhatsapp(String whatsapp) {
 		this.whatsapp = whatsapp;
+	}
+
+	public List<Interest> getInterests() {
+		return interests;
+	}
+
+	public void setInterests(List<Interest> interests) {
+		this.interests = interests;
 	}
 
 }
