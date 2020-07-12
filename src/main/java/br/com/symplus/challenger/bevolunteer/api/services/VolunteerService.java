@@ -1,6 +1,7 @@
 package br.com.symplus.challenger.bevolunteer.api.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,9 @@ import br.com.symplus.challenger.bevolunteer.api.dtos.VolunteerDTO;
 import br.com.symplus.challenger.bevolunteer.api.entities.Interest;
 import br.com.symplus.challenger.bevolunteer.api.entities.Volunteer;
 import br.com.symplus.challenger.bevolunteer.api.enuns.MessageCode;
+import br.com.symplus.challenger.bevolunteer.api.handlerError.models.InvalidIdExeception;
 import br.com.symplus.challenger.bevolunteer.api.repositories.VolunteerRepository;
+import javassist.NotFoundException;
 
 @Service
 public class VolunteerService {
@@ -38,11 +41,13 @@ public class VolunteerService {
 		}).collect(Collectors.toList());
 	}
 
-	public VolunteerDTO getById(Integer id) throws Exception {
+	public VolunteerDTO getById(Integer id) throws NotFoundException {
 		Optional<Volunteer> optional = repository.findById(id);
 
 		if (!optional.isPresent()) {
-			throw new Exception("Not found");
+			throw new NotFoundException(
+				MessageComponent.getMessage(MessageCode.NOT_FOUND.getCode(), "Voluntário")
+			);
 		}
 
 		VolunteerDTO dto = new VolunteerDTO();
@@ -60,13 +65,7 @@ public class VolunteerService {
 	}
 	
 	public void removeById(Integer id) throws Exception {
-		
-		Optional<Volunteer> optional = repository.findById(id);
-		
-		if (!optional.isPresent()) {
-			throw new Exception(MessageComponent.getMessage(MessageCode.NOT_FOUND.getCode(), "Voluntário"));
-		}
-		
+		isValidVolunteer(id);
 		repository.deleteById(id);
 	}
 
@@ -78,6 +77,7 @@ public class VolunteerService {
 
 	@Transactional(value = TxType.REQUIRED)
 	public MessageDTO update(VolunteerDTO dto) throws Exception {
+		isValidVolunteer(dto.getId());
 		saveVolunteer(dto);
 		return new MessageDTO("Voluntário editado com sucesso.");
 	}
@@ -102,6 +102,21 @@ public class VolunteerService {
 			BeanUtils.copyProperties(interestDto, interestEnt);
 			return interestEnt;
 		}).collect(Collectors.toList());
+	}
+	
+	private void isValidVolunteer(Integer id) throws NotFoundException, InvalidIdExeception {
+		
+		if (Objects.isNull(id)) {
+			throw new InvalidIdExeception();
+		}
+		
+		Optional<Volunteer> optional = repository.findById(id);
+
+		if (!optional.isPresent()) {
+			throw new NotFoundException(
+				MessageComponent.getMessage(MessageCode.NOT_FOUND.getCode(), "Voluntário")
+			);
+		}
 	}
 
 }

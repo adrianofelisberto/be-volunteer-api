@@ -24,39 +24,27 @@ public class VolunteerController {
 
 	@Autowired
 	private VolunteerService service;
-	
+
 	@GetMapping
 	public ResponseEntity<List<VolunteerDTO>> getAll() {
 		return ResponseEntity.ok().body(service.getAll());
 	}
-	
+
 	@GetMapping("{id}")
-	public ResponseEntity<VolunteerDTO> getById(@PathVariable Integer id) {
-		try {
-			return ResponseEntity.ok(service.getById(id));
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<VolunteerDTO> getById(@PathVariable Integer id) throws Exception {
+		return ResponseEntity.ok(service.getById(id));
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<MessageDTO> create(@RequestBody VolunteerDTO dto ) {
-		try {
-			return ResponseEntity.ok(service.create(dto));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+	public ResponseEntity<MessageDTO> create(@RequestBody VolunteerDTO dto) throws Exception {
+		return ResponseEntity.ok(service.create(dto));
 	}
 
 	@PutMapping
-	public ResponseEntity<MessageDTO> update(@RequestBody VolunteerDTO dto ) {
-		try {
-			return ResponseEntity.ok(service.update(dto));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+	public ResponseEntity<MessageDTO> update(@RequestBody VolunteerDTO dto) throws Exception {
+		return ResponseEntity.ok(service.update(dto));
 	}
-	
+
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> remove(@PathVariable Integer id) {
 		try {
@@ -66,5 +54,5 @@ public class VolunteerController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 }

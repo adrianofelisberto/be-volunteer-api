@@ -18,7 +18,6 @@ public class AppConfig implements WebServerFactoryCustomizer<TomcatServletWebSer
 	public ResourceBundleMessageSource messageSource() {
 		ResourceBundleMessageSource source = new ResourceBundleMessageSource();
 		source.setBasenames("messages_pt-br");
-		source.setDefaultEncoding("UTF-8");
 		source.setUseCodeAsDefaultMessage(true);
 		return source;
 	}
