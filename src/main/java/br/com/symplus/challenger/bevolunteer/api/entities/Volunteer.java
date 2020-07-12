@@ -2,7 +2,6 @@ package br.com.symplus.challenger.bevolunteer.api.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,19 +28,20 @@ public class Volunteer {
 	@Column(name = "phone", length = 45, nullable = false)
 	private String phone;
 
-	@Column(name = "whatsapp", length = 45, nullable = false)
+	@Column(name = "whatsapp", length = 45, nullable = true)
 	private String whatsapp;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-	@JoinTable(
-		name = "volunteers_has_interests",
-		joinColumns={@JoinColumn(name="volunteers_id")},
-		inverseJoinColumns={@JoinColumn(name="interests_id")}
-	)
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "volunteers_has_interests", joinColumns = {
+			@JoinColumn(name = "volunteers_id") }, inverseJoinColumns = { @JoinColumn(name = "interests_id") })
 	private List<Interest> interests;
 
 	public Integer getId() {
 		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {

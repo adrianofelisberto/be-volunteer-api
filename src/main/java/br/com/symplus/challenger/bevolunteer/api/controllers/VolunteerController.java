@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,6 @@ public class VolunteerController {
 
 	@Autowired
 	private VolunteerService service;
-	
 	
 	@GetMapping
 	public ResponseEntity<List<VolunteerDTO>> getAll() {
@@ -42,6 +42,15 @@ public class VolunteerController {
 	public ResponseEntity<MessageDTO> create(@RequestBody VolunteerDTO dto ) {
 		try {
 			return ResponseEntity.ok(service.create(dto));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@PutMapping
+	public ResponseEntity<MessageDTO> update(@RequestBody VolunteerDTO dto ) {
+		try {
+			return ResponseEntity.ok(service.update(dto));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}

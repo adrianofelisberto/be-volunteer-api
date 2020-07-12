@@ -30,6 +30,8 @@ public class VolunteerService {
 		return volunteers.stream().map(entity -> {
 			VolunteerDTO dto = new VolunteerDTO();
 			BeanUtils.copyProperties(entity, dto);
+			// TODO: remove when solving problem with Lazy
+			dto.setInterests(null);
 			return dto;
 		}).collect(Collectors.toList());
 	}
@@ -57,19 +59,36 @@ public class VolunteerService {
 
 	@Transactional(value = TxType.REQUIRED)
 	public MessageDTO create(VolunteerDTO dto) throws Exception {
+		saveVolunteer(dto);
+		return new MessageDTO("Voluntário salvo com sucesso.");
+	}
+
+	@Transactional(value = TxType.REQUIRED)
+	public MessageDTO update(VolunteerDTO dto) throws Exception {
+		saveVolunteer(dto);
+		return new MessageDTO("Voluntário editado com sucesso.");
+	}
+
+	private void saveVolunteer(VolunteerDTO dto) {
+		Volunteer entity = this.convertDtoToEntity(dto);
+		List<Interest> interestsEnt = this.convertInterestsDtoToEntity(dto.getInterests());
+
+		entity.setInterests(interestsEnt);
+		repository.save(entity);
+	}
+
+	private Volunteer convertDtoToEntity(VolunteerDTO dto) {
 		Volunteer entity = new Volunteer();
 		BeanUtils.copyProperties(dto, entity);
-		
-		List<Interest> interestsEnt = dto.getInterests().stream().map(interestDto -> {
+		return entity;
+	}
+
+	private List<Interest> convertInterestsDtoToEntity(List<InterestDTO> interestsDto) {
+		return interestsDto.stream().map(interestDto -> {
 			Interest interestEnt = new Interest();
 			BeanUtils.copyProperties(interestDto, interestEnt);
 			return interestEnt;
 		}).collect(Collectors.toList());
-		
-		entity.setInterests(interestsEnt);
-		repository.save(entity);
-
-		return new MessageDTO("Voluntário salvo com sucesso.");
 	}
 
 }

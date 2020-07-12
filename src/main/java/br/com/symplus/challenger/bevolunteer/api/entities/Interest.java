@@ -13,10 +13,10 @@ public class Interest {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "descrition", length = 45, nullable = false)
+	@Column(name = "descrition")
 	private String description;
 
-	@Column(name = "logo_link", nullable = false)
+	@Column(name = "logo_link")
 	private String logoLink;
 
 	public Integer getId() {
