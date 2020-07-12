@@ -11,11 +11,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.symplus.challenger.bevolunteer.api.config.MessageComponent;
 import br.com.symplus.challenger.bevolunteer.api.dtos.InterestDTO;
 import br.com.symplus.challenger.bevolunteer.api.dtos.MessageDTO;
 import br.com.symplus.challenger.bevolunteer.api.dtos.VolunteerDTO;
 import br.com.symplus.challenger.bevolunteer.api.entities.Interest;
 import br.com.symplus.challenger.bevolunteer.api.entities.Volunteer;
+import br.com.symplus.challenger.bevolunteer.api.enuns.MessageCode;
 import br.com.symplus.challenger.bevolunteer.api.repositories.VolunteerRepository;
 
 @Service
@@ -55,6 +57,17 @@ public class VolunteerService {
 
 		return dto;
 
+	}
+	
+	public void removeById(Integer id) throws Exception {
+		
+		Optional<Volunteer> optional = repository.findById(id);
+		
+		if (!optional.isPresent()) {
+			throw new Exception(MessageComponent.getMessage(MessageCode.NOT_FOUND.getCode(), "Voluntário"));
+		}
+		
+		repository.deleteById(id);
 	}
 
 	@Transactional(value = TxType.REQUIRED)

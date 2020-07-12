@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +31,9 @@ public class VolunteerController {
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<VolunteerDTO> getById(@PathVariable String id) {
+	public ResponseEntity<VolunteerDTO> getById(@PathVariable Integer id) {
 		try {
-			return ResponseEntity.ok(service.getById(Integer.valueOf(id)));
+			return ResponseEntity.ok(service.getById(id));
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
@@ -51,6 +52,16 @@ public class VolunteerController {
 	public ResponseEntity<MessageDTO> update(@RequestBody VolunteerDTO dto ) {
 		try {
 			return ResponseEntity.ok(service.update(dto));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@DeleteMapping("{id}")
+	public ResponseEntity<?> remove(@PathVariable Integer id) {
+		try {
+			service.removeById(id);
+			return ResponseEntity.noContent().build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
