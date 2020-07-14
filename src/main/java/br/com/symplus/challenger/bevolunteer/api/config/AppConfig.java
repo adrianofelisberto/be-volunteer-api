@@ -3,10 +3,10 @@ package br.com.symplus.challenger.bevolunteer.api.config;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class AppConfig implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
 
 	@Override

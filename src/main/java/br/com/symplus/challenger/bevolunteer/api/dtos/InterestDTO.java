@@ -8,7 +8,7 @@ public class InterestDTO {
 
 	private Integer id;
 	private String description;
-	private String logo;
+	private String logoLink;
 
 	public Integer getId() {
 		return id;
@@ -26,12 +26,12 @@ public class InterestDTO {
 		this.description = description;
 	}
 
-	public String getLogo() {
-		return logo;
+	public String getLogoLink() {
+		return logoLink;
 	}
 
-	public void setLogo(String logo) {
-		this.logo = logo;
+	public void setLogoLink(String logoLink) {
+		this.logoLink = logoLink;
 	}
 
 }
