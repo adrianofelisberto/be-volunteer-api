@@ -64,9 +64,10 @@ public class VolunteerService {
 
 	}
 	
-	public void removeById(Integer id) throws Exception {
+	public MessageDTO removeById(Integer id) throws Exception {
 		isValidVolunteer(id);
 		repository.deleteById(id);
+		return new MessageDTO("Voluntário removido com sucesso.");
 	}
 
 	@Transactional(value = TxType.REQUIRED)
